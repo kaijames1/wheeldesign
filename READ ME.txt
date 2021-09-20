@@ -1,0 +1,59 @@
+=====================================================================
+Shape, Topology, and MD optimization routines (+ the cantilever beam)
+---------------------------------------------------------------------
+Patrick Kelley, April 2021
+UIUC
+---------------------------------------------------------------------
+Notes:
+   * All necessary functions are included in the 'main' files
+   * Comments are liberally included in the programs and functions
+   * Any notes concerning each specific regime are described below
+=====================================================================
+Programs:
+
+MAIN_SO.m
+   * Controls the shape optimization over both flat and sinusoidal
+      terrain. Other terrains could be included by modifying the
+      'genTX' function.
+   * Convergence to the final shape typically occurs, but could
+      (and should) probably be smoothed. This might just be a
+      side effect of the discrete formulation, but should still be
+      investigated.
+   * To promote convergence for the circular case, code was added
+      into the 'mmasub' function to try and dampen oscillations
+      caused by the perimeter sensitivities switching sign from
+      one iteration to the next. This seemed to slow convergence
+      for the elliptical case and thus was commented out during 
+      those runs. The ellipse still did converge, eventually, as
+      it is the global optimum.
+
+MAIN_TO.m
+   * Controls the topology optimization of both the (fixed) circluar
+      and elliptical wheel. This is controlled by commenting/
+      uncommenting the necessary lines (which are noted in the
+      program).
+   * Convergence occurs, but could maybe be made faster by varying
+      the parameters of the MMA. This was not checked by PK
+   * For testing on a machine without the Parallel Computing toolbox,
+      if statements, with a toggle variable, are included. For
+      improved performance on the Campus Cluster, say, it would
+      probably be best to remove those ifs.
+
+MAIN_MDO.m
+   * Combine the notes for the above. Convergence is really slow in
+      creating the spokes out of the 'solid' disk, and thus should be
+      improved upon so that the KKT conditions can be satisfied 
+      during runs on the Campus Cluster
+
+MAIN_CB.m
+   * Just for examples.
+
+---------------------------------------------------------------------
+For running on the campus cluster:
+ - Upload desired program into your 'scratch' directory.
+   -- This is to allow for big matrices, since the scratch has 10TB
+   -- Make sure results are saved using the 'makegif' or 'makepng'
+ - Upload the sbatch file into your normal directory.
+   -- Make sure to put in your proper username
+   -- Put in the proper filename at the bottom.
+ - Use the command 'sbatch matlabTO.sbatch' to submit the job!
